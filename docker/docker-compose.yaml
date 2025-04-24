@@ -1,0 +1,39 @@
+---
+services:
+  postgres:
+    image: postgres:16
+    profiles:
+      - postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-keycloak}
+      POSTGRES_USER: ${POSTGRES_USER:-keycloak}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-localdev}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "${POSTGRES_EXTERNAL_PORT:-305432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-keycloak}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.2.1
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: ${KEYCLOAK_DB_URL:-jdbc:postgresql://postgres/keycloak}
+      KC_DB_PASSWORD: ${POSTGRES_PASSWORD:-keycloak_password}
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN:-admin}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD:-localdev}
+    ports:
+      - "${KEYCLOAK_EXTERNAL_PORT:-30080}:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+        required: false
+    command:
+      - start-dev
+
+volumes:
+  postgres_data:
