@@ -71,7 +71,7 @@ The Dockerized Postgres service is included in the `postgres` profile and starts
 
 3. Start both services with the `postgres` profile:
    ```bash
-   docker-compose -f docker/docker-compose.yaml --profile postgres up -d
+   docker-compose -f docker/docker-compose.yaml --profile postgres up
    ```
 
     - Postgres runs on `localhost:35432` (or your `POSTGRES_EXTERNAL_PORT`).
@@ -112,7 +112,7 @@ export KEYCLOAK_EXTERNAL_PORT=30080
 Start only the `keycloak` service to avoid running the Dockerized Postgres:
 
 ```bash
-docker-compose -f docker/docker-compose.yaml up -d keycloak
+docker-compose -f docker/docker-compose.yaml up
 ```
 
 Keycloak will connect to the external database specified in `KEYCLOAK_DB_URL`.

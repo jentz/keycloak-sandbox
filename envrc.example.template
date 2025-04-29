@@ -2,4 +2,4 @@
 export POSTGRESQL_DB=keycloak
 export POSTGRESQL_USER=keycloak
 export POSTGRESQL_PASSWORD=localdev
-export KEYCLOAK_DB_URL=jdbc:postgresql://host.docker.internal/keycloak
+export KEYCLOAK_DB_URL=jdbc:postgresql://host.docker.internal:5432/keycloak
